@@ -21,6 +21,7 @@ def get_pet(pet_id):
     return pet or ('Not found', 404)
 
 
+
 def put_pet(pet_id, pet):
     exists = pet_id in PETS
     pet['id'] = pet_id
@@ -49,9 +50,9 @@ logging.basicConfig(level=logging.INFO)
 app = connexion.App(__name__)
 app.add_api('swagger.yaml')
 # set the WSGI application callable to allow using uWSGI:
-# uwsgi --http :8080 -w app
+# uwsgi --http :8080 -w app 
 application = app.app
 
 if __name__ == '__main__':
     # run our standalone gevent server
-    app.run(port=8080)
+    app.run(port=8080, debug=True)
