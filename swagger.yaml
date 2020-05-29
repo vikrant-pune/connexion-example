@@ -1,25 +1,25 @@
 swagger: '2.0'
 info:
-  title: Pet Shop Example API
+  title: Pet Shop Example API 2
   version: "0.1"
   description: Simple example API to store and retrieve pets
 consumes:
   - application/json
 produces:
   - application/json
-security:
+# security:
   # enable OAuth protection for all REST endpoints
   # (only active if the TOKENINFO_URL environment variable is set)
-  - oauth2: [uid]
+  # - oauth2: [uid]
 paths:
   /pets:
     get:
       tags: [Pets]
       operationId: app.get_pets
-      summary: Get all pets
+      summary: Get all petss
       parameters:
         - name: animal_type
-          in: query
+          in: body
           type: string
           pattern: "^[a-zA-Z0-9]*$"
         - name: limit
@@ -28,6 +28,9 @@ paths:
           format: int32
           minimum: 0
           default: 100
+        - name: tag
+          in: query
+          type: string
       responses:
         200:
           description: Return pets
@@ -38,7 +41,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/definitions/Pet'
-  /pets/{pet_id}:
+  /pets1/{pet_id}:
     get:
       tags: [Pets]
       operationId: app.get_pet
@@ -99,12 +102,12 @@ definitions:
       id:
         type: string
         description: Unique identifier
-        example: "123"
+        example: "1234"
         readOnly: true
       name:
         type: string
         description: Pet's name
-        example: "Susie"
+        example: "Susie1"
         minLength: 1
         maxLength: 100
       animal_type:
@@ -113,7 +116,10 @@ definitions:
         example: "cat"
         minLength: 1
       tags:
-        type: object
+        type: array
+        items:
+          type: string
+        example : ["abcd", "xyz"]
         description: Custom tags
       created:
         type: string

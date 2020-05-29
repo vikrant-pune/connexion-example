@@ -9,9 +9,12 @@ from connexion import NoContent
 PETS = {}
 
 
-def get_pets(limit, animal_type=None):
+def get_pets(limit, animal_type=None, tag=None):
+    if animal_type is not None:
+        return {"pets": [pet for pet in PETS.values() if not animal_type or pet['animal_type'] == animal_type][:limit]}
+    else:
+        return {"pets": [pet for pet in PETS.values() if not tag or tag  in pet['tags']][:limit]}
     return {"pets": [pet for pet in PETS.values() if not animal_type or pet['animal_type'] == animal_type][:limit]}
-
 
 def get_pet(pet_id):
     pet = PETS.get(pet_id)
@@ -23,12 +26,14 @@ def put_pet(pet_id, pet):
     pet['id'] = pet_id
     if exists:
         logging.info('Updating pet %s..', pet_id)
+        pet['modified'] = datetime.datetime.utcnow()
+        
         PETS[pet_id].update(pet)
     else:
         logging.info('Creating pet %s..', pet_id)
         pet['created'] = datetime.datetime.utcnow()
         PETS[pet_id] = pet
-    return NoContent, (200 if exists else 201)
+    return {"id":pet_id}, (200 if exists else 201)
 
 
 def delete_pet(pet_id):
@@ -49,4 +54,4 @@ application = app.app
 
 if __name__ == '__main__':
     # run our standalone gevent server
-    app.run(port=8080, server='gevent')
+    app.run(port=8080)
