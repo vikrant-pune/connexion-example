@@ -15,11 +15,11 @@ paths:
   /pets:
     get:
       tags: [Pets]
-      operationId: app.get_pets
-      summary: Get all petss
+      operationId: foo.foo
+      summary: Get all petss3
       parameters:
         - name: animal_type
-          in: body
+          in: query
           type: string
           pattern: "^[a-zA-Z0-9]*$"
         - name: limit
